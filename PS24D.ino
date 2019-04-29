@@ -1,6 +1,3 @@
-//www.elegoo.com
-//2016.12.9
-
 //We always have to include the library
 #include "LedControl.h"
 #include "stdbool.h"
@@ -30,7 +27,6 @@ void writeMatrix(bool charMatrix[3][4],int x, int y){
 				for(int j=y;j<y+4;j++){
 					if(i-x>=0){
 						if(j-y>=0){
-
 							matrix[i][j] = charMatrix[i-x][j-y];
 						}
 					}
@@ -39,1182 +35,337 @@ void writeMatrix(bool charMatrix[3][4],int x, int y){
 		}
 	}
 }
+void writeBytes (bool matrix[3][4],unsigned char byteFlag1,unsigned char byteFlag2){
+  matrix[0][0] = ((byteFlag1 >> 7) & 0x01);
+  matrix[0][1] = ((byteFlag1 >> 6) & 0x01);
+  matrix[0][2] = ((byteFlag1 >> 5) & 0x01);
+  matrix[0][3] = ((byteFlag1 >> 4) & 0x01);
+  matrix[1][0] = ((byteFlag1 >> 3) & 0x01);
+  matrix[1][1] = ((byteFlag1 >> 2) & 0x01);
+  matrix[1][2] = ((byteFlag1 >> 1) & 0x01);
+  matrix[1][3] = ((byteFlag1 >> 0) & 0x01);
+  matrix[2][0] = ((byteFlag2 >> 7) & 0x01);
+  matrix[2][1] = ((byteFlag2 >> 6) & 0x01);
+  matrix[2][2] = ((byteFlag2 >> 5) & 0x01);
+  matrix[2][3] = ((byteFlag2 >> 4) & 0x01);
+}
 
 void writeLetter (char letter, int x, int y){
 	bool matrix[3][4];
 	switch (letter){
 	case 'A':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11100101,0b11100000)
 		break;
 
 	case 'B':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11111011,0b11000000)
 		break;
 			
 	case 'C':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01101001,0b10010000)
 		break;
 			
 	case 'D':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11111001,0b01100000)
 		break;
 			
 	case 'E':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11111101,0b10010000)
 		break;
 			
 	case 'F':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11110101,0b00010000)
 		break;
 			
 	case 'G':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01101001,0b11010000)
 		break;
 			
 	case 'H':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11110110,0b11110000)
 		break;
 
 	case 'I':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b10011111,0b10010000)
 			
 		break;
 	case 'J':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01011001,0b01110000)
 		break;
 
 	case 'K':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11110010,0b11010000)
 		break;
 
 	case 'L':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11111000,0b10000000)
 		break;
 
 	case 'M':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11110011,0b11110000)
 		break;
 
 	case 'N':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11110001,0b11100000)
 		break;
 
 	case 'O':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01101001,0b01100000)
 		break;
 
 	case 'P':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11110101,0b00100000)
 		break;
 
 	case 'Q':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01101001,0b11100000)
 		break;
 
 	case 'R':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11110101,0b10100000)
 		break;
 
 	case 'S':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b10101101,0b01010000)
 		break;
 
 	case 'T':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b00011111,0b00010000)
 		break;
 
 	case 'U':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11111000,0b11110000)
 		break;
 
 	case 'V':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01111000,0b01110000)
 		break;
 
 	case 'W':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11111100,0b11110000)
 		break;
 
 	case 'X':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11010010,0b11010000)
 		break;
 
 	case 'Y':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b10011010,0b01110000)
 		break;
 
 	case 'Z':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11011001,0b10110000)
 	
 		break;
 		
 	case 'a':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01001010,0b11100000)
 		break;
 
 	case 'b':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11111010,0b01000000)
 		break;
 
 	case 'c':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01001010,0b10100000)
 		break;
 
 	case 'd':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01001010,0b11110000)
 		break;
 
 	case 'e':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01101110,0b10100000)
 		break;
 
 	case 'f':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01001110,0b01010000)
 		break;
 
 	case 'g':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10101110,0b01100000)
 		break;
 
 	case 'h':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11110010,0b11000000)
 		break;
 
 	case 'i':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00001101,0b00000000)
 		break;
 
 	case 'j':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10001101,0b00000000)
 		break;
 
 	case 'k':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11110100,0b10100000)
 		break;
 
 	case 'l':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00000111,0b10000000)
 		break;
 
 	case 'm':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11100110,0b11100000)
 		break;
 
 	case 'n':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11100010,0b11000000)
 		break;
 
 	case 'o':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01001010,0b01000000)
 		break;
 
 	case 'p':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11100110,0b00000000)
 		break;
 
 	case 'q':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01101110,0b00000000)
 		break;
 
 	case 'r':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00001110,0b00100000)
 		break;
 
 	case 's':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10001110,0b00100000)
 		break;
 
 	case 't':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00101111,0b10100000)
 		break;
 
 	case 'u':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11101000,0b11100000)
 		break;
 
 	case 'v':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01101000,0b01100000)
 		break;
 
 	case 'w':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b11101100,0b11100000)
 		break;
 
 	case 'x':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10100100,0b10100000)
 		break;
 
 	case 'y':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10101100,0b01100000)
 		break;
 
 	case 'z':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00101110,0b10000000)
 	
 		break;
 		
 		
 	case '0':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11111001,0b11110000)
 		break;
 
 	case '1':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10101111,0b10000000)
 		break;
 
 	case '2':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10011101,0b10100000)
 		break;
 
 	case '3':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b10011011,0b01010000)
 		break;
 
 	case '4':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01110100,0b11100000)
 		break;
 
 	case '5':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b10111101,0b01010000)
 		break;
 
 	case '6':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01101101,0b11010000)
 		break;
 
 	case '7':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b00011101,0b00110000)
 		break;
 
 	case '8':
-		matrix[0][0]=1;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b11111011,0b11110000)
 		break;
 
 	case '9':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b10111011,0b01110000)
 		break;
 
 	case '(char)223':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00110011,0b00000000)
 		break;
 
 	case '-':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01000100,0b01000000)
 		break;
 
 	case '+':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b01001110,0b01000000)
 		break;
 
 	case '/':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b10000110,0b00010000)
 		break;
 
 	case '*':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=1;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01010010,0b01010000)
 		break;
 
 	case '=':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10101010,0b10100000)
 		break;
 
 	case '.':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10000000,0b00000000)
 		break;
 
 	case '!':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10110000,0b00000000)
 		break;
 
 	case '?':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00011001,0b00100000)
 		break;
 
 	case ',':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10000100,0b00000000)
 		break;
 
 	case ')':
-		matrix[0][0]=0;
-		matrix[0][1]=1;
-		matrix[0][2]=1;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b01101000,0b00010000)
 		break;
 
 	case '(':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10010110,0b00000000)
 		break;
 
 	case '[':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=1;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=1;
+		writeBytes(&matrix,0b00001111,0b10010000)
 		break;
 
 	case ']':
-		matrix[0][0]=1;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=1;
-		matrix[1][0]=1;
-		matrix[1][1]=1;
-		matrix[1][2]=1;
-		matrix[1][3]=1;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b10011111,0b00000000)
 		break;
 
 	case ':':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=0;
-		matrix[0][3]=0;
-		matrix[1][0]=1;
-		matrix[1][1]=0;
-		matrix[1][2]=1;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=0;
-		matrix[2][3]=0;
+		writeBytes(&matrix,0b00001010,0b00000000)
 		break;
 
 	case '"':
-		matrix[0][0]=0;
-		matrix[0][1]=0;
-		matrix[0][2]=1;
-		matrix[0][3]=1;
-		matrix[1][0]=0;
-		matrix[1][1]=0;
-		matrix[1][2]=0;
-		matrix[1][3]=0;
-		matrix[2][0]=0;
-		matrix[2][1]=0;
-		matrix[2][2]=1;
-		matrix[2][3]=1;
-	
+		writeBytes(&matrix,0b00110000,0b00110000)
 		break;
 	
 	}
