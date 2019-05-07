@@ -19,10 +19,11 @@ LedControl::LedControl(int dataPin, int clkPin, int csPin) {
     
     // send HIGH to device
     digitalWrite(SPI_CS,HIGH);
-    //SPI_MOSI=dataPin;
+    SPI_MOSI=dataPin;
     
     // initialisize status array
-    for(int i=0;i<8;i++) status[i]=0x00;
+    for(int i=0;i<8;i++) 
+        status[i]=0x00;
     
     // test on start all LEDs
     spiTransfer(OP_DISPLAYTEST,0);
