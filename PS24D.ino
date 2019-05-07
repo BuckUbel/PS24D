@@ -304,9 +304,9 @@ void writeLetter (char letter, int x, int y){
     writeBytes(matrix,0b10111011,0b01110000);
     break;
 
-  case 223:
+ /* case 223:
     writeBytes(matrix,0b00110011,0b00000000);
-    break;
+    break;*/
 
   case '-':
     writeBytes(matrix,0b01000100,0b01000000);
@@ -383,7 +383,7 @@ void writeLetterOnMatrix(char letter, int x, int y){
  pin 10 is connected to the CLK 
  We have only a single MAX72XX.
  */
-LedControl lc=LedControl(12,10,11,1);
+LedControl lc=LedControl(12,10,11);
 
 /* we always wait a bit between updates of the display */
 unsigned long delaytime1=500;
@@ -396,11 +396,11 @@ void setup() {
   delay(1000);
   keyboard.begin(DataPin, IRQpin);
   
-  lc.shutdown(0,false);
+  lc.shutdown(false);
   /* Set the brightness to a medium values */
-  lc.setIntensity(0,8);
+  lc.setIntensity(8);
   /* and clear the display */
-  lc.clearDisplay(0);
+  lc.clearDisplay();
   Serial.begin(9600);
   
   Serial.println("Begin");
@@ -426,7 +426,7 @@ void writeArduinoOnMatrix() {
     for(int i=0; i<sizeof(matrix);i++){
       for(int j=0; j<sizeof(matrix[i]); j++){
         
-        lc.setLed(0,i,j,matrix[i][j]);
+        lc.setLed(i,j,matrix[i][j]);
       }
     }
 }
@@ -436,7 +436,7 @@ void clearArduinoOnMatrix() {
     for(int i=0; i<(sizeof(matrix)/sizeof(matrix[0]));i++){
       for(int j=0; j<sizeof(matrix[i]); j++){
         matrix[i][j] = 0;
-        lc.setLed(0,i,j,0);
+        lc.setLed(i,j,0);
       }
     }
 }
