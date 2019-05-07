@@ -241,10 +241,10 @@ PS2Keyboard::PS2Keyboard() {
   // nothing to do here, begin() does it all
 }
 
-void PS2Keyboard::begin(uint8_t data_pin, uint8_t irq_pin, const PS2Keymap_t &map) {
+void PS2Keyboard::begin(uint8_t data_pin, uint8_t irq_pin) {
   
   DataPin = data_pin;
-  keymap = &map;
+  keymap = &PS2Keymap_German;
 
   // initialize the pins
 #ifdef INPUT_PULLUP
