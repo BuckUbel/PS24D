@@ -12,6 +12,11 @@ const int IRQpin = 3;
 LedControl lc = LedControl(LEDDataPin,LEDLoadPin,LEDCLKPin);
 PS2Keyboard keyboard;
 
+const int maxCharCount = 100;
+int charCount = 0;
+char currentLetters[100];
+bool isEntered = false;
+
 bool matrix[8][8] = {
   {0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0},
@@ -22,7 +27,7 @@ bool matrix[8][8] = {
   {0,0,0,0,0,0,0,0}
 };
 
-char currentChar = 'A';
+char currentPos = 0;
 
 void writeMatrix(bool charMatrix[3][4],int x, int y){
   if(x<8){
@@ -400,7 +405,31 @@ void setup() {
   
   Serial.println("Begin");
 }
+void writeArduinoOnMatrix() {
+    for(int i=0; i<sizeof(matrix);i++){
+      for(int j=0; j<sizeof(matrix[i]); j++){
+        lc.setLed(i,j,matrix[i][j]);
+      }
+    }
+}
 
+void clearArduinoOnMatrix() {
+  /* here is the data for the characters */
+    for(int i=0; i<(sizeof(matrix)/sizeof(matrix[0]));i++){
+      for(int j=0; j<sizeof(matrix[i]); j++){
+        matrix[i][j] = 0;
+        lc.setLed(i,j,0);
+      }
+    }
+}
+void saveLetter(char letter){
+  currentLetters[charCount] = letter;
+  charCount++;
+}
+void eraseString(){
+  charCount = 0;
+  // TODO: erase all chars in array
+}
 void loop() { 
   
  if (keyboard.available()) {
@@ -408,12 +437,58 @@ void loop() {
     char c = keyboard.read();
     
     // check for some of the special keys
-    if (c == PS2_ENTER) {
-      Serial.println();
+    if(c == PS2_BACKSPACE || c == PS2_DELETE ){
+      currentLetters[charCount] = '\0';
+      charCount--;
+    }
+    else if(c == PS2_LEFTARROW){
+      if(currentPos>0){
+        currentPos--;
+      }
+    }
+    else if(c == PS2_RIGHTARROW){
+      if(currentPos<charCount-1){
+        currentPos++;        
+      }
+    }
+    else if (c == PS2_ENTER) {
+      Serial.println(charCount);
+      isEntered = true;
     } else {
+      if(isEntered){
+        isEntered = false;
+        eraseString();
+      }
       Serial.print(c);
-      currentChar = c;
+      currentPos = charCount;
+      saveLetter(c);
     }
   }
-       writeLetterOnMatrix(currentChar,2,2);
+  if(isEntered){
+    for(int j=0; j<charCount; j++){
+      for(int i=8; i>=-3; i--){
+        if(j>0 && i == 8){
+          i=0;
+        }
+        clearArduinoOnMatrix();
+        writeLetterOnMatrix(currentLetters[j],i,2);
+        if(j+1<charCount){
+          writeLetterOnMatrix(currentLetters[j+1],i+4,2);
+        }
+        if(j+2<charCount){
+          writeLetterOnMatrix(currentLetters[j+2],i+8,2);
+        }
+        delay(200);
+      }
+    }
+    isEntered = false;
+    
+    clearArduinoOnMatrix();
+  }
+  else{
+    if(currentLetters[currentPos] != '\0'){
+     writeLetterOnMatrix(currentLetters[currentPos],2,2);
+    }
+  }
+    
 }
