@@ -366,6 +366,15 @@ void writeLetterOnMatrix (char letter, int x, int y){
     break;
   }
   writeMatrix(matrix,x,y);
+  writeMatrixOnDisplay();
+}
+void writeMatrixOnDisplay() {
+  /* here is the data for the characters */
+    for(int i=0; i<sizeof(matrix);i++){
+      for(int j=0; j<sizeof(matrix[i]); j++){
+        lc.setLed(i,j,matrix[i][j]);
+      }
+    }
 }
 /*
  Now we need a LedControl to work with.
