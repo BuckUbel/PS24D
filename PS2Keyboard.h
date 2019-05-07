@@ -57,12 +57,19 @@
 #define PS2_F11                       0
 #define PS2_F12                       0
 #define PS2_SCROLL                    0
-#define PS2_EURO_SIGN                 0
 
+#define PS2_CURRENCY_SIGN             164 // ¤
 #define PS2_SECTION_SIGN              167 // §
-#define PS2_LEFT_DOUBLE_ANGLE_QUOTE   171 // «
 #define PS2_DEGREE_SIGN               176 // °
-#define PS2_RIGHT_DOUBLE_ANGLE_QUOTE  187 // »
+#define PS2_SUPERSCRIPT_TWO           178 // ²
+#define PS2_SUPERSCRIPT_THREE         179 // ³
+#define PS2_MICRO_SIGN                181 // µ
+#define PS2_A_DIAERESIS               196 // Ä
+#define PS2_O_DIAERESIS               214 // Ö
+#define PS2_U_DIAERESIS               220 // Ü
+#define PS2_SHARP_S                   223 // ß
+#define PS2_a_DIAERESIS               228 // ä
+#define PS2_u_DIAERESIS               252 // ü
 
 #define PS2_KEYMAP_SIZE 136
 
