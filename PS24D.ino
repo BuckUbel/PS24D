@@ -50,7 +50,7 @@ void writeBytes (bool matrix[3][4],unsigned char byteFlag1,unsigned char byteFla
   matrix[2][3] = ((byteFlag2 >> 4) & 0x01);
 }
 
-void writeLetter (char letter, int x, int y){
+void writeLetterOnMatrix (char letter, int x, int y){
   bool matrix[3][4];
   switch (letter){
   case 'A':
@@ -364,13 +364,8 @@ void writeLetter (char letter, int x, int y){
   case '"':
     writeBytes(matrix,0b00110000,0b00110000);
     break;
-  
   }
   writeMatrix(matrix,x,y);
-}
-void writeLetterOnMatrix(char letter, int x, int y){
-  writeLetter(letter,x,y);
-  writeArduinoOnMatrix();
 }
 /*
  Now we need a LedControl to work with.
@@ -403,65 +398,8 @@ void setup() {
   Serial.println("Begin");
 }
 
-/*
- This method will display the characters for the
- word "Arduino" one after the other on the matrix. 
- (you need at least 5x7 leds to see the whole chars)
- */
-
-
- byte ToByte(bool b[8])
-{
-    byte c = 0;
-    for (int i=8; i >= 0; --i)
-        if (b[i])
-            c |= 1 << i;
-    return c;
-}
-void writeArduinoOnMatrix() {
-  /* here is the data for the characters */
-    for(int i=0; i<sizeof(matrix);i++){
-      for(int j=0; j<sizeof(matrix[i]); j++){
-        
-        lc.setLed(i,j,matrix[i][j]);
-      }
-    }
-}
-
-void clearArduinoOnMatrix() {
-  /* here is the data for the characters */
-    for(int i=0; i<(sizeof(matrix)/sizeof(matrix[0]));i++){
-      for(int j=0; j<sizeof(matrix[i]); j++){
-        matrix[i][j] = 0;
-        lc.setLed(i,j,0);
-      }
-    }
-}
-
 void loop() { 
   
-//  writeLetter('C',0,4);
-//  writeArduinoOnMatrix();
-//  writeLetter('h',4,4);
-//  writeArduinoOnMatrix();
-
- // writeLetter('r',0,0);
-//  writeArduinoOnMatrix();
-
-//  writeLetter('i',4,0);
- // writeArduinoOnMatrix();
-
-  //writeLetter('s',0,4);
-  //writeArduinoOnMatrix();
-  
- /* for(int i=8; i>=-2; i--){
-     clearArduinoOnMatrix();
-    writeLetterOnMatrix('Q',i,2);
-    //writeLetterOnMatrix('Q',-1,2);
-    delay(200);
-  }
-    delay(2000);
-  */
  if (keyboard.available()) {
     // read the next key
     char c = keyboard.read();
@@ -472,23 +410,7 @@ void loop() {
     } else {
       Serial.print(c);
       currentChar = c;
-     //for(int i=8; i>=-2; i--){
-      //clearArduinoOnMatrix();
-      //writeLetterOnMatrix(c,i,2);
-      //Serial.print("Y: ");
-      //Serial.print(2);
-      //Serial.print("X: ");
-      //Serial.println(2);
-      //delay(200);
-     // }
-      //delay(2000);
     }
   }
-  
        writeLetterOnMatrix(currentChar,2,2);
-   // writeLetterOnMatrix('Q',-1,2);
-// delay(10000);;
- // rows();
-  //columns();
-  //single();
 }
