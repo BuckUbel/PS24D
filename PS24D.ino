@@ -302,9 +302,9 @@ void writeLetter (char letter, int x, int y){
     writeBytes(matrix,0b10111011,0b01110000);
     break;
 
- /* case 176:
+  case -80:
     writeBytes(matrix,0b00110011,0b00000000);
-    break;*/
+    break;
 
   case '-':
     writeBytes(matrix,0b01000100,0b01000000);
