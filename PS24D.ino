@@ -16,6 +16,9 @@ const int maxCharCount = 100;
 int charCount = 0;
 char currentLetters[100];
 bool isEntered = false;
+bool isRotating = false;
+int currentBrightness = 8;
+int currentSpeed = 200;
 
 bool matrix[8][8] = {
   {0,0,0,0,0,0,0,0},
@@ -400,7 +403,7 @@ void setup() {
   
   lc.shutdown(false);
   /* Set the brightness to a medium values */
-  lc.setIntensity(8);
+  lc.setIntensity(currentBrightness);
   /* and clear the display */
   lc.clearDisplay();
 
@@ -434,16 +437,44 @@ void eraseString(){
   charCount = 0;
   // TODO: erase all chars in array
 }
+
+void scrollThrough(){
+   for(int j=0; j<charCount; j++){
+      for(int i=8; i>=-3; i--){
+        if(j>0 && i == 8){
+          i=0;
+        }
+        clearArduinoOnMatrix();
+        writeLetterOnMatrix(currentLetters[j],i,2);
+        if(j+1<charCount){
+          writeLetterOnMatrix(currentLetters[j+1],i+4,2);
+        }
+        if(j+2<charCount){
+          writeLetterOnMatrix(currentLetters[j+2],i+8,2);
+        }
+        delay(currentSpeed);
+      }
+    }
+}
+
 void loop() { 
   
  if (keyboard.available()) {
     // read the next key
     char c = keyboard.read();
-    
     // check for some of the special keys
-    if(c == PS2_BACKSPACE || c == PS2_DELETE ){
+    if(c == PS2_DELETE ){
       currentLetters[charCount] = '\0';
-      charCount--;
+      if(charCount>0){
+        charCount--;
+      }
+      if(currentPos>0){
+        currentPos--;
+      }
+      if(currentPos == 0 || charCount == 0){
+        currentLetters[charCount] = '\0';
+        clearArduinoOnMatrix();
+      }
     }
     else if(c == PS2_LEFTARROW){
       if(currentPos>0){
@@ -454,6 +485,31 @@ void loop() {
       if(currentPos<charCount-1){
         currentPos++;        
       }
+    }
+    else if(c == PS2_UPARROW){
+      if(currentSpeed>=100){
+        currentSpeed-=50;
+      }
+    }
+    else if(c == PS2_DOWNARROW){
+      if(currentSpeed<=2450){
+        currentSpeed+=50;        
+      }
+    }
+    else if(c == PS2_PAGEUP){
+      if(currentBrightness<=14){
+        currentBrightness++;
+        lc.setIntensity(currentBrightness);
+      }
+    }
+    else if(c == PS2_PAGEDOWN){
+      if(currentBrightness>=0){
+        currentBrightness--;
+        lc.setIntensity(currentBrightness);
+      }
+    }
+    else if (c == PS2_ESC){
+        isRotating = !isRotating;
     }
     else if (c == PS2_ENTER) {
       Serial.println(charCount);
@@ -468,25 +524,12 @@ void loop() {
       saveLetter(c);
     }
   }
-  if(isEntered){
-    for(int j=0; j<charCount; j++){
-      for(int i=8; i>=-3; i--){
-        if(j>0 && i == 8){
-          i=0;
-        }
-        clearArduinoOnMatrix();
-        writeLetterOnMatrix(currentLetters[j],i,2);
-        if(j+1<charCount){
-          writeLetterOnMatrix(currentLetters[j+1],i+4,2);
-        }
-        if(j+2<charCount){
-          writeLetterOnMatrix(currentLetters[j+2],i+8,2);
-        }
-        delay(200);
-      }
-    }
+  if(isRotating){
+    scrollThrough();
+  }
+  else if(isEntered){
+    scrollThrough();
     isEntered = false;
-    
     clearArduinoOnMatrix();
   }
   else{
@@ -494,5 +537,4 @@ void loop() {
      writeLetterOnMatrix(currentLetters[currentPos],2,2);
     }
   }
-    
 }
