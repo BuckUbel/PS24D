@@ -170,9 +170,6 @@ typedef struct {
   uint8_t altgr[PS2_KEYMAP_SIZE];
 } PS2Keymap_t;
 
-
-extern const PROGMEM PS2Keymap_t PS2Keymap_German;
-
 class PS2Keyboard {
   public:
     PS2Keyboard();
@@ -181,7 +178,7 @@ class PS2Keyboard {
      * Registering the external interrupt.
      * setting the pin modes correctly and driving those needed to high.
      */
-    static void begin(uint8_t dataPin, uint8_t irq_pin, const PS2Keymap_t &map = PS2Keymap_German);
+    static void begin(uint8_t dataPin, uint8_t irq_pin);
 
     /**
      * Returns true if there is a char to be read, false if not.
