@@ -155,7 +155,6 @@ void writeLetter (char letter, int x, int y){
 
   case 'Z':
     writeBytes(matrix,0b11011001,0b10110000);
-  
     break;
     
   case 'a':
