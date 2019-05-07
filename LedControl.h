@@ -63,7 +63,7 @@ class LedControl {
         /* The array for shifting the data to the devices */
         byte spidata[16];
         /* Send out a single command to the device */
-        void spiTransfer(int addr, byte opcode, byte data);
+        void spiTransfer(byte opcode, byte data);
 
         /* We keep track of the led-status for all 8 devices in this array */
         byte status[64];
@@ -73,8 +73,6 @@ class LedControl {
         int SPI_CLK;
         /* This one is driven LOW for chip selectzion */
         int SPI_CS;
-        /* The maximum number of devices we use */
-        int maxDevices;
 
     public:
         /* 
@@ -85,7 +83,7 @@ class LedControl {
          * csPin		pin for selecting the device 
          * numDevices	maximum number of devices that can be controled
          */
-        LedControl(int dataPin, int clkPin, int csPin, int numDevices=1);
+        LedControl(int dataPin, int clkPin, int csPin);
 
         /*
          * Gets the number of devices attached to this LedControl.
@@ -101,7 +99,7 @@ class LedControl {
          * status	If true the device goes into power-down mode. Set to false
          *		for normal operation.
          */
-        void shutdown(int addr, bool status);
+        void shutdown(bool status);
 
         /* 
          * Set the number of digits (or rows) to be displayed.
@@ -111,7 +109,7 @@ class LedControl {
          * addr	address of the display to control
          * limit	number of digits to be displayed (1..8)
          */
-        void setScanLimit(int addr, int limit);
+        void setScanLimit(int limit);
 
         /* 
          * Set the brightness of the display.
@@ -119,14 +117,14 @@ class LedControl {
          * addr		the address of the display to control
          * intensity	the brightness of the display. (0..15)
          */
-        void setIntensity(int addr, int intensity);
+        void setIntensity(int intensity);
 
         /* 
          * Switch all Leds on the display off. 
          * Params:
          * addr	address of the display to control
          */
-        void clearDisplay(int addr);
+        void clearDisplay();
 
         /* 
          * Set the status of a single Led.
@@ -137,7 +135,7 @@ class LedControl {
          * state	If true the led is switched on, 
          *		if false it is switched off
          */
-        void setLed(int addr, int row, int col, boolean state);
+        void setLed(int row, int col, boolean state);
 
         /* 
          * Set all 8 Led's in a row to a new state
@@ -147,7 +145,7 @@ class LedControl {
          * value	each bit set to 1 will light up the
          *		corresponding Led.
          */
-        void setRow(int addr, int row, byte value);
+        void setRow(int row, byte value);
 
         /* 
          * Set all 8 Led's in a column to a new state
@@ -157,7 +155,7 @@ class LedControl {
          * value	each bit set to 1 will light up the
          *		corresponding Led.
          */
-        void setColumn(int addr, int col, byte value);
+        void setColumn(int col, byte value);
 
         /* 
          * Display a hexadecimal digit on a 7-Segment Display
@@ -167,7 +165,7 @@ class LedControl {
          * value	the value to be displayed. (0x00..0x0F)
          * dp	sets the decimal point.
          */
-        void setDigit(int addr, int digit, byte value, boolean dp);
+        void setDigit(int digit, byte value, boolean dp);
 
         /* 
          * Display a character on a 7-Segment display.
@@ -181,7 +179,7 @@ class LedControl {
          * value	the character to be displayed. 
          * dp	sets the decimal point.
          */
-        void setChar(int addr, int digit, char value, boolean dp);
+        void setChar(int digit, char value, boolean dp);
 };
 
 #endif	//LedControl.h

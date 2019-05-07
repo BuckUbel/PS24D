@@ -43,13 +43,10 @@
 #define OP_SHUTDOWN    12
 #define OP_DISPLAYTEST 15
 
-LedControl::LedControl(int dataPin, int clkPin, int csPin, int numDevices) {
+LedControl::LedControl(int dataPin, int clkPin, int csPin) {
     SPI_MOSI=dataPin;
     SPI_CLK=clkPin;
     SPI_CS=csPin;
-    if(numDevices<=0 || numDevices>8 )
-        numDevices=8;
-    maxDevices=numDevices;
     pinMode(SPI_MOSI,OUTPUT);
     pinMode(SPI_CLK,OUTPUT);
     pinMode(SPI_CS,OUTPUT);
@@ -57,126 +54,92 @@ LedControl::LedControl(int dataPin, int clkPin, int csPin, int numDevices) {
     SPI_MOSI=dataPin;
     for(int i=0;i<64;i++) 
         status[i]=0x00;
-    for(int i=0;i<maxDevices;i++) {
-        spiTransfer(i,OP_DISPLAYTEST,0);
-        //scanlimit is set to max on startup
-        setScanLimit(i,7);
-        //decode is done in source
-        spiTransfer(i,OP_DECODEMODE,0);
-        clearDisplay(i);
-        //we go into shutdown-mode on startup
-        shutdown(i,true);
-    }
+    
+    spiTransfer(OP_DISPLAYTEST,0);
+    //scanlimit is set to max on startup
+    setScanLimit(7);
+    //decode is done in source
+    spiTransfer(OP_DECODEMODE,0);
+    clearDisplay();
+    //we go into shutdown-mode on startup
+    shutdown(true);
+    
 }
 
-int LedControl::getDeviceCount() {
-    return maxDevices;
-}
 
-void LedControl::shutdown(int addr, bool b) {
-    if(addr<0 || addr>=maxDevices)
-        return;
+void LedControl::shutdown(bool b) {
     if(b)
-        spiTransfer(addr, OP_SHUTDOWN,0);
+        spiTransfer(OP_SHUTDOWN,0);
     else
-        spiTransfer(addr, OP_SHUTDOWN,1);
+        spiTransfer(OP_SHUTDOWN,1);
 }
 
-void LedControl::setScanLimit(int addr, int limit) {
-    if(addr<0 || addr>=maxDevices)
-        return;
+void LedControl::setScanLimit(int limit) {
     if(limit>=0 && limit<8)
-        spiTransfer(addr, OP_SCANLIMIT,limit);
+        spiTransfer(OP_SCANLIMIT,limit);
 }
 
-void LedControl::setIntensity(int addr, int intensity) {
-    if(addr<0 || addr>=maxDevices)
-        return;
+void LedControl::setIntensity(int intensity) {
     if(intensity>=0 && intensity<16)	
-        spiTransfer(addr, OP_INTENSITY,intensity);
+        spiTransfer(OP_INTENSITY,intensity);
 }
 
-void LedControl::clearDisplay(int addr) {
-    int offset;
-
-    if(addr<0 || addr>=maxDevices)
-        return;
-    offset=addr*8;
+void LedControl::clearDisplay() {
     for(int i=0;i<8;i++) {
-        status[offset+i]=0;
-        spiTransfer(addr, i+1,status[offset+i]);
+        status[i]=0;
+        spiTransfer(i+1,status[i]);
     }
 }
 
-void LedControl::setLed(int addr, int row, int column, boolean state) {
-    int offset;
+void LedControl::setLed(int row, int column, boolean state) {
     byte val=0x00;
 
-    if(addr<0 || addr>=maxDevices)
-        return;
     if(row<0 || row>7 || column<0 || column>7)
         return;
-    offset=addr*8;
     val=B10000000 >> column;
     if(state)
-        status[offset+row]=status[offset+row]|val;
+        status[row]=status[row]|val;
     else {
         val=~val;
-        status[offset+row]=status[offset+row]&val;
+        status[row]=status[row]&val;
     }
-    spiTransfer(addr, row+1,status[offset+row]);
+    spiTransfer(row+1,status[row]);
 }
 
-void LedControl::setRow(int addr, int row, byte value) {
-    int offset;
-    if(addr<0 || addr>=maxDevices)
-        return;
+void LedControl::setRow(int row, byte value) {
     if(row<0 || row>7)
         return;
-    offset=addr*8;
-    status[offset+row]=value;
-    spiTransfer(addr, row+1,status[offset+row]);
+    status[row]=value;
+    spiTransfer(row+1,status[row]);
 }
 
-void LedControl::setColumn(int addr, int col, byte value) {
+void LedControl::setColumn(int col, byte value) {
     byte val;
-
-    if(addr<0 || addr>=maxDevices)
-        return;
     if(col<0 || col>7) 
         return;
     for(int row=0;row<8;row++) {
         val=value >> (7-row);
         val=val & 0x01;
-        setLed(addr,row,col,val);
+        setLed(row,col,val);
     }
 }
 
-void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
-    int offset;
+void LedControl::setDigit(int digit, byte value, boolean dp) {
     byte v;
 
-    if(addr<0 || addr>=maxDevices)
-        return;
     if(digit<0 || digit>7 || value>15)
         return;
-    offset=addr*8;
     v=pgm_read_byte_near(charTable + value); 
     if(dp)
         v|=B10000000;
-    status[offset+digit]=v;
-    spiTransfer(addr, digit+1,v);
+    status[digit]=v;
+    spiTransfer(digit+1,v);
 }
 
-void LedControl::setChar(int addr, int digit, char value, boolean dp) {
-    int offset;
+void LedControl::setChar(int digit, char value, boolean dp) {
     byte index,v;
-
-    if(addr<0 || addr>=maxDevices)
-        return;
     if(digit<0 || digit>7)
         return;
-    offset=addr*8;
     index=(byte)value;
     if(index >127) {
         //no defined beyond index 127, so we use the space char
@@ -185,24 +148,22 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     v=pgm_read_byte_near(charTable + index); 
     if(dp)
         v|=B10000000;
-    status[offset+digit]=v;
-    spiTransfer(addr, digit+1,v);
+    status[digit]=v;
+    spiTransfer(digit+1,v);
 }
 
-void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
+void LedControl::spiTransfer(volatile byte opcode, volatile byte data) {
     //Create an array with the data to shift out
-    int offset=addr*2;
-    int maxbytes=maxDevices*2;
 
-    for(int i=0;i<maxbytes;i++)
+    for(int i=0;i<2;i++)
         spidata[i]=(byte)0;
     //put our device data into the array
-    spidata[offset+1]=opcode;
-    spidata[offset]=data;
+    spidata[1]=opcode;
+    spidata[0]=data;
     //enable the line 
     digitalWrite(SPI_CS,LOW);
     //Now shift out the data 
-    for(int i=maxbytes;i>0;i--)
+    for(int i=2;i>0;i--)
         shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
     //latch the data onto the display
     digitalWrite(SPI_CS,HIGH);
