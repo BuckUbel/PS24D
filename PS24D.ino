@@ -368,6 +368,10 @@ void writeLetterOnMatrix (char letter, int x, int y){
   case '"':
     writeBytes(matrix,0b00110000,0b00110000);
     break;
+
+  case ' ':
+    writeBytes(matrix,0b00000000,0b00000000);
+    break;
   }
   writeMatrix(matrix,x,y);
   writeMatrixOnDisplay();
