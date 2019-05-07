@@ -69,6 +69,7 @@
 #define PS2_U_DIAERESIS               220 // Ü
 #define PS2_SHARP_S                   223 // ß
 #define PS2_a_DIAERESIS               228 // ä
+#define PS2_o_DIAERESIS               246 // ö
 #define PS2_u_DIAERESIS               252 // ü
 
 #define PS2_KEYMAP_SIZE 136
