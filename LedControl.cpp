@@ -22,7 +22,7 @@ LedControl::LedControl(int dataPin, int clkPin, int csPin) {
     SPI_MOSI=dataPin;
     
     // initialisize status array
-    for(int i=0;i<8;i++) 
+    for(int i=0;i<64;i++) 
         status[i]=0x00;
     
     // test on start all LEDs

@@ -43,7 +43,7 @@ class LedControl {
         void spiTransfer(byte opcode, byte data);
 
         /* We keep track of the led-status for 1 device in this array */
-        byte status[8];
+        byte status[64];
         /* Data is shifted out of this pin*/
         int SPI_MOSI;
         /* The clock is signaled on this pin */
