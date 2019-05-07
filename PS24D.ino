@@ -4,8 +4,8 @@
 #include "PS2Keyboard.h"
 
 const int LEDDataPin = 12;
-const int LEDLoadPin = 11;
-const int LEDCLKPin = 10;
+const int LEDLoadPin = 10;
+const int LEDCLKPin = 11;
 const int DataPin = 8;
 const int IRQpin = 3;
 
