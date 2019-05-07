@@ -126,7 +126,7 @@ void writeLetter (char letter, int x, int y){
     break;
 
   case 'S':
-    writeBytes(matrix,0b10101101,0b01010000);
+    writeBytes(matrix,0b10101001,0b01010000);
     break;
 
   case 'T':
@@ -260,9 +260,7 @@ void writeLetter (char letter, int x, int y){
 
   case 'z':
     writeBytes(matrix,0b00101110,0b10000000);
-  
     break;
-    
     
   case '0':
     writeBytes(matrix,0b11111001,0b11110000);
@@ -304,7 +302,7 @@ void writeLetter (char letter, int x, int y){
     writeBytes(matrix,0b10111011,0b01110000);
     break;
 
- /* case 223:
+ /* case 176:
     writeBytes(matrix,0b00110011,0b00000000);
     break;*/
 
