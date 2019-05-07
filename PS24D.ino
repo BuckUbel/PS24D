@@ -3,9 +3,13 @@
 #include "stdbool.h"
 #include "PS2Keyboard.h"
 
+const int LEDDataPin = 12;
+const int LEDLoadPin = 11;
+const int LEDCLKPin = 10;
 const int DataPin = 8;
 const int IRQpin = 3;
 
+LedControl lc = LedControl(LEDDataPin,LEDLoadPin,LEDCLKPin);
 PS2Keyboard keyboard;
 
 bool matrix[8][8] = {
@@ -375,19 +379,7 @@ void writeLetterOnMatrix(char letter, int x, int y){
   writeLetter(letter,x,y);
   writeArduinoOnMatrix();
 }
-/*
- Now we need a LedControl to work with.
- ***** These pin numbers will probably not work with your hardware *****
- pin 12 is connected to the DataIn 
- pin 11 is connected to LOAD(CS)
- pin 10 is connected to the CLK 
- We have only a single MAX72XX.
- */
-LedControl lc=LedControl(12,10,11);
 
-/* we always wait a bit between updates of the display */
-unsigned long delaytime1=500;
-unsigned long delaytime2=50;
 void setup() {
   /*
    The MAX72XX is in power-saving mode on startup,
@@ -401,6 +393,8 @@ void setup() {
   lc.setIntensity(8);
   /* and clear the display */
   lc.clearDisplay();
+
+  // set serial monitor baud
   Serial.begin(9600);
   
   Serial.println("Begin");
