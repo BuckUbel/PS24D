@@ -2,6 +2,7 @@
 #include "LedControl.h"
 #include "stdbool.h"
 #include "PS2Keyboard.h"
+#include "Font.h"
 
 const int LEDDataPin = 12;
 const int LEDLoadPin = 11;
@@ -11,6 +12,7 @@ const int IRQpin = 3;
 
 LedControl lc = LedControl(LEDDataPin,LEDCLKPin, LEDLoadPin);
 PS2Keyboard keyboard;
+Font myFont;
 
 const int maxCharCount = 100;
 int charCount = 0;
@@ -47,340 +49,25 @@ void writeMatrix(bool charMatrix[3][4],int x, int y){
     }
   }
 }
-void writeBytes (bool matrix[3][4],unsigned char byteFlag1,unsigned char byteFlag2){
-  matrix[0][0] = ((byteFlag1 >> 7) & 0x01);
-  matrix[0][1] = ((byteFlag1 >> 6) & 0x01);
-  matrix[0][2] = ((byteFlag1 >> 5) & 0x01);
-  matrix[0][3] = ((byteFlag1 >> 4) & 0x01);
-  matrix[1][0] = ((byteFlag1 >> 3) & 0x01);
-  matrix[1][1] = ((byteFlag1 >> 2) & 0x01);
-  matrix[1][2] = ((byteFlag1 >> 1) & 0x01);
-  matrix[1][3] = ((byteFlag1 >> 0) & 0x01);
-  matrix[2][0] = ((byteFlag2 >> 7) & 0x01);
-  matrix[2][1] = ((byteFlag2 >> 6) & 0x01);
-  matrix[2][2] = ((byteFlag2 >> 5) & 0x01);
-  matrix[2][3] = ((byteFlag2 >> 4) & 0x01);
+void writeBytes (bool matrix[3][4],int bitWord){
+  matrix[0][0] = ((bitWord >> 15) & 0x01);
+  matrix[0][1] = ((bitWord >> 14) & 0x01);
+  matrix[0][2] = ((bitWord >> 13) & 0x01);
+  matrix[0][3] = ((bitWord >> 12) & 0x01);
+  matrix[1][0] = ((bitWord >> 11) & 0x01);
+  matrix[1][1] = ((bitWord >> 10) & 0x01);
+  matrix[1][2] = ((bitWord >> 9) & 0x01);
+  matrix[1][3] = ((bitWord >> 8) & 0x01);
+  matrix[2][0] = ((bitWord >> 7) & 0x01);
+  matrix[2][1] = ((bitWord >> 6) & 0x01);
+  matrix[2][2] = ((bitWord >> 5) & 0x01);
+  matrix[2][3] = ((bitWord >> 4) & 0x01);
 }
 
 void writeLetterOnMatrix (char letter, int x, int y){
   bool matrix[3][4];
-  switch (letter){
-  case 'A':
-    writeBytes(matrix,0b11100101,0b11100000);
-    break;
-
-  case 'B':
-    writeBytes(matrix,0b11111011,0b11000000);
-    break;
-      
-  case 'C':
-    writeBytes(matrix,0b01101001,0b10010000);
-    break;
-      
-  case 'D':
-    writeBytes(matrix,0b11111001,0b01100000);
-    break;
-      
-  case 'E':
-    writeBytes(matrix,0b11111101,0b10010000);
-    break;
-      
-  case 'F':
-    writeBytes(matrix,0b11110101,0b00010000);
-    break;
-      
-  case 'G':
-    writeBytes(matrix,0b01101001,0b11010000);
-    break;
-      
-  case 'H':
-    writeBytes(matrix,0b11110110,0b11110000);
-    break;
-
-  case 'I':
-    writeBytes(matrix,0b10011111,0b10010000);
-      
-    break;
-  case 'J':
-    writeBytes(matrix,0b01011001,0b01110000);
-    break;
-
-  case 'K':
-    writeBytes(matrix,0b11110010,0b11010000);
-    break;
-
-  case 'L':
-    writeBytes(matrix,0b11111000,0b10000000);
-    break;
-
-  case 'M':
-    writeBytes(matrix,0b11110011,0b11110000);
-    break;
-
-  case 'N':
-    writeBytes(matrix,0b11110001,0b11100000);
-    break;
-
-  case 'O':
-    writeBytes(matrix,0b01101001,0b01100000);
-    break;
-
-  case 'P':
-    writeBytes(matrix,0b11110101,0b00100000);
-    break;
-
-  case 'Q':
-    writeBytes(matrix,0b01101001,0b11100000);
-    break;
-
-  case 'R':
-    writeBytes(matrix,0b11110101,0b10100000);
-    break;
-
-  case 'S':
-    writeBytes(matrix,0b10101001,0b01010000);
-    break;
-
-  case 'T':
-    writeBytes(matrix,0b00011111,0b00010000);
-    break;
-
-  case 'U':
-    writeBytes(matrix,0b11111000,0b11110000);
-    break;
-
-  case 'V':
-    writeBytes(matrix,0b01111000,0b01110000);
-    break;
-
-  case 'W':
-    writeBytes(matrix,0b11111100,0b11110000);
-    break;
-
-  case 'X':
-    writeBytes(matrix,0b11010010,0b11010000);
-    break;
-
-  case 'Y':
-    writeBytes(matrix,0b10011010,0b01110000);
-    break;
-
-  case 'Z':
-    writeBytes(matrix,0b11011001,0b10110000);
-    break;
-    
-  case 'a':
-    writeBytes(matrix,0b01001010,0b11100000);
-    break;
-
-  case 'b':
-    writeBytes(matrix,0b11111010,0b01000000);
-    break;
-
-  case 'c':
-    writeBytes(matrix,0b01001010,0b10100000);
-    break;
-
-  case 'd':
-    writeBytes(matrix,0b01001010,0b11110000);
-    break;
-
-  case 'e':
-    writeBytes(matrix,0b01101110,0b10100000);
-    break;
-
-  case 'f':
-    writeBytes(matrix,0b01001110,0b01010000);
-    break;
-
-  case 'g':
-    writeBytes(matrix,0b10101110,0b01100000);
-    break;
-
-  case 'h':
-    writeBytes(matrix,0b11110010,0b11000000);
-    break;
-
-  case 'i':
-    writeBytes(matrix,0b00001101,0b00000000);
-    break;
-
-  case 'j':
-    writeBytes(matrix,0b10001101,0b00000000);
-    break;
-
-  case 'k':
-    writeBytes(matrix,0b11110100,0b10100000);
-    break;
-
-  case 'l':
-    writeBytes(matrix,0b00000111,0b10000000);
-    break;
-
-  case 'm':
-    writeBytes(matrix,0b11100110,0b11100000);
-    break;
-
-  case 'n':
-    writeBytes(matrix,0b11100010,0b11000000);
-    break;
-
-  case 'o':
-    writeBytes(matrix,0b01001010,0b01000000);
-    break;
-
-  case 'p':
-    writeBytes(matrix,0b11100110,0b00000000);
-    break;
-
-  case 'q':
-    writeBytes(matrix,0b01101110,0b00000000);
-    break;
-
-  case 'r':
-    writeBytes(matrix,0b00001110,0b00100000);
-    break;
-
-  case 's':
-    writeBytes(matrix,0b10001110,0b00100000);
-    break;
-
-  case 't':
-    writeBytes(matrix,0b00101111,0b10100000);
-    break;
-
-  case 'u':
-    writeBytes(matrix,0b11101000,0b11100000);
-    break;
-
-  case 'v':
-    writeBytes(matrix,0b01101000,0b01100000);
-    break;
-
-  case 'w':
-    writeBytes(matrix,0b11101100,0b11100000);
-    break;
-
-  case 'x':
-    writeBytes(matrix,0b10100100,0b10100000);
-    break;
-
-  case 'y':
-    writeBytes(matrix,0b10101100,0b01100000);
-    break;
-
-  case 'z':
-    writeBytes(matrix,0b00101110,0b10000000);
-    break;
-    
-  case '0':
-    writeBytes(matrix,0b11111001,0b11110000);
-    break;
-
-  case '1':
-    writeBytes(matrix,0b10101111,0b10000000);
-    break;
-
-  case '2':
-    writeBytes(matrix,0b10011101,0b10100000);
-    break;
-
-  case '3':
-    writeBytes(matrix,0b10011011,0b01010000);
-    break;
-
-  case '4':
-    writeBytes(matrix,0b01110100,0b11100000);
-    break;
-
-  case '5':
-    writeBytes(matrix,0b10111101,0b01010000);
-    break;
-
-  case '6':
-    writeBytes(matrix,0b01101101,0b11010000);
-    break;
-
-  case '7':
-    writeBytes(matrix,0b00011101,0b00110000);
-    break;
-
-  case '8':
-    writeBytes(matrix,0b11111011,0b11110000);
-    break;
-
-  case '9':
-    writeBytes(matrix,0b10111011,0b01110000);
-    break;
-
-  case -80:
-    writeBytes(matrix,0b00110011,0b00000000);
-    break;
-
-  case '-':
-    writeBytes(matrix,0b01000100,0b01000000);
-    break;
-
-  case '+':
-    writeBytes(matrix,0b01001110,0b01000000);
-    break;
-
-  case '/':
-    writeBytes(matrix,0b10000110,0b00010000);
-    break;
-
-  case '*':
-    writeBytes(matrix,0b01010010,0b01010000);;
-    break;
-
-  case '=':
-    writeBytes(matrix,0b10101010,0b10100000);;
-    break;
-
-  case '.':
-    writeBytes(matrix,0b10000000,0b00000000);
-    break;
-
-  case '!':
-    writeBytes(matrix,0b10110000,0b00000000);
-    break;
-
-  case '?':
-    writeBytes(matrix,0b00011001,0b00100000);
-    break;
-
-  case ',':
-    writeBytes(matrix,0b10000100,0b00000000);
-    break;
-
-  case ')':
-    writeBytes(matrix,0b01101000,0b00010000);
-    break;
-
-  case '(':
-    writeBytes(matrix,0b10010110,0b00000000);
-    break;
-
-  case '[':
-    writeBytes(matrix,0b00001111,0b10010000);
-    break;
-
-  case ']':
-    writeBytes(matrix,0b10011111,0b00000000);
-    break;
-
-  case ':':
-    writeBytes(matrix,0b00001010,0b00000000);
-    break;
-
-  case '"':
-    writeBytes(matrix,0b00110000,0b00110000);
-    break;
-
-  case ' ':
-    writeBytes(matrix,0b00000000,0b00000000);
-    break;
-  }
+  int fontBytes = myFont.getFontBytes(letter);
+  writeBytes(matrix, fontBytes);
   writeMatrix(matrix,x,y);
   writeMatrixOnDisplay();
 }
