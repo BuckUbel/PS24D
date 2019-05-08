@@ -106,6 +106,8 @@ void LedControl::spiTransfer(volatile byte opcode, volatile byte data) {
     
     //Now shift out the data 
     for(int i=2;i>0;i--)
+        // shiftOut(dataPin, clockPin, bitOrder, value)
+        // MSBFirst ==> most significant bit
         shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
     
     //latch the data onto the display

@@ -44,19 +44,19 @@
 #define PS2_LEFTARROW                 8
 #define PS2_DOWNARROW                 10
 #define PS2_RIGHTARROW                21
-#define PS2_F1                        0
-#define PS2_F2                        0
-#define PS2_F3                        0
-#define PS2_F4                        0
-#define PS2_F5                        0
-#define PS2_F6                        0
-#define PS2_F7                        0
-#define PS2_F8                        0
-#define PS2_F9                        0
-#define PS2_F10                       0
-#define PS2_F11                       0
-#define PS2_F12                       0
-#define PS2_SCROLL                    0
+#define PS2_F1                        5
+#define PS2_F2                        6
+#define PS2_F3                        4
+#define PS2_F4                        12
+#define PS2_F5                        3
+#define PS2_F6                        11
+#define PS2_F7                        83//
+#define PS2_F8                        10
+#define PS2_F9                        1
+#define PS2_F10                       9
+#define PS2_F11                       120
+#define PS2_F12                       7
+#define PS2_SCROLL                    126
 
 #define PS2_CURRENCY_SIGN             164 // ¤
 #define PS2_SECTION_SIGN              167 // §

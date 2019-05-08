@@ -4,12 +4,12 @@
 #include "PS2Keyboard.h"
 
 const int LEDDataPin = 12;
-const int LEDLoadPin = 10;
-const int LEDCLKPin = 11;
+const int LEDLoadPin = 11;
+const int LEDCLKPin = 10;
 const int DataPin = 8;
 const int IRQpin = 3;
 
-LedControl lc = LedControl(LEDDataPin,LEDLoadPin,LEDCLKPin);
+LedControl lc = LedControl(LEDDataPin,LEDCLKPin, LEDLoadPin);
 PS2Keyboard keyboard;
 
 const int maxCharCount = 100;
@@ -455,6 +455,7 @@ void scrollThrough(){
         delay(currentSpeed);
       }
     }
+    currentPos = charCount -1;
 }
 
 void loop() { 
@@ -508,7 +509,7 @@ void loop() {
         lc.setIntensity(currentBrightness);
       }
     }
-    else if (c == PS2_ESC){
+    else if (c == PS2_F1){
         isRotating = !isRotating;
     }
     else if (c == PS2_ENTER) {
@@ -534,7 +535,14 @@ void loop() {
   }
   else{
     if(currentLetters[currentPos] != '\0'){
-     writeLetterOnMatrix(currentLetters[currentPos],2,2);
+     
+     if(currentPos-1 >= 0){
+        writeLetterOnMatrix(currentLetters[currentPos],4,2);
+        writeLetterOnMatrix(currentLetters[currentPos-1],0,2);
+     }
+     else{
+      writeLetterOnMatrix(currentLetters[currentPos],0,2);
+     }
     }
   }
 }
